@@ -1,10 +1,11 @@
-package com.thean.dreamshops.service;
+package com.thean.dreamshops.service.image;
 
 import com.thean.dreamshops.dto.ImageDTO;
 import com.thean.dreamshops.exception.NotFoundException;
 import com.thean.dreamshops.model.Image;
 import com.thean.dreamshops.model.Product;
 import com.thean.dreamshops.repository.ImageRepository;
+import com.thean.dreamshops.service.product.IProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -55,8 +56,8 @@ public class ImageService implements IImageService {
                 imageRepository.save(savedImage);
 
                 ImageDTO imageDTO = new ImageDTO();
-                imageDTO.setImageId(savedImage.getId());
-                imageDTO.setImageName(savedImage.getFileName());
+                imageDTO.setId(savedImage.getId());
+                imageDTO.setFileName(savedImage.getFileName());
                 imageDTO.setDownloadUrl(savedImage.getDownloadUrl());
 
                 savedImageDTO.add(imageDTO);

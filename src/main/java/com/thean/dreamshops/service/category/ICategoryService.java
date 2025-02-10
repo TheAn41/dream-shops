@@ -1,4 +1,4 @@
-package com.thean.dreamshops.service;
+package com.thean.dreamshops.service.category;
 
 import com.thean.dreamshops.dto.CategoryDTO;
 import com.thean.dreamshops.model.Category;

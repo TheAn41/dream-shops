@@ -5,7 +5,7 @@ import com.thean.dreamshops.exception.AlredyExistingException;
 import com.thean.dreamshops.exception.NotFoundException;
 import com.thean.dreamshops.model.Category;
 import com.thean.dreamshops.response.ApiResponse;
-import com.thean.dreamshops.service.ICategoryService;
+import com.thean.dreamshops.service.category.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,7 +40,7 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/category/{id}")
+    @GetMapping("/category/id/{id}")
     public ResponseEntity<ApiResponse> getCategoryById(@PathVariable Long id) {
         try {
             Category category = categoryService.getCategoryById(id);
@@ -50,8 +50,8 @@ public class CategoryController {
         }
     }
 
-    @GetMapping("/category/{name}")
-    public ResponseEntity<ApiResponse> getCategoryByName(@PathVariable String name) {
+    @GetMapping("/category/name")
+    public ResponseEntity<ApiResponse> getCategoryByName(@RequestParam String name) {
         try {
             Category category = categoryService.getCategoryByName(name);
             return ResponseEntity.ok(new ApiResponse("Found!", category));
@@ -64,7 +64,7 @@ public class CategoryController {
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long id) {
         try {
             categoryService.deleteCategory(id);
-            return ResponseEntity.ok(new ApiResponse("Found!", null));
+            return ResponseEntity.ok(new ApiResponse("Delete success!", null));
         } catch (NotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));
         }

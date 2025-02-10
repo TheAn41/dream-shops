@@ -1,12 +1,16 @@
-package com.thean.dreamshops.service;
+package com.thean.dreamshops.service.product;
 
+import com.thean.dreamshops.dto.ImageDTO;
 import com.thean.dreamshops.dto.ProductDTO;
 import com.thean.dreamshops.exception.NotFoundException;
 import com.thean.dreamshops.model.Category;
+import com.thean.dreamshops.model.Image;
 import com.thean.dreamshops.model.Product;
 import com.thean.dreamshops.repository.CategoryRepository;
+import com.thean.dreamshops.repository.ImageRepository;
 import com.thean.dreamshops.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +21,8 @@ import java.util.Optional;
 public class ProductService implements IProductService {
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+    private final ModelMapper modelMapper;
+    private final ImageRepository imageRepository;
 
     @Override
     public Product addProduct(ProductDTO request) {
@@ -103,5 +109,20 @@ public class ProductService implements IProductService {
     @Override
     public Long countProductsByBrandAndName(String brand, String name) {
         return productRepository.countByBrandAndName(brand, name);
+    }
+@Override
+public List<ProductDTO> getConvertedProducts(List<Product> products){
+        return products.stream().map(this::convertToDTO).toList();
+
+    }
+
+
+@Override
+public ProductDTO convertToDTO(Product product) {
+       ProductDTO productDTO = modelMapper.map(product, ProductDTO.class);
+       List<Image> images = imageRepository.findByProductId(product.getId());
+       List<ImageDTO> imageDTOS = images.stream().map(image -> modelMapper.map(image, ImageDTO.class)).toList();
+       productDTO.setImages(imageDTOS);
+       return productDTO;
     }
 }

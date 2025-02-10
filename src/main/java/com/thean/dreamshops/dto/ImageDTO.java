@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 @Data
 public class ImageDTO implements Serializable {
-    private  Long imageId;
-    private String imageName;
+    private  Long id;
+    private String fileName;
     private String downloadUrl;
 }

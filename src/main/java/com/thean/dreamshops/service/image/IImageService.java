@@ -1,4 +1,4 @@
-package com.thean.dreamshops.service;
+package com.thean.dreamshops.service.image;
 
 import com.thean.dreamshops.dto.ImageDTO;
 import com.thean.dreamshops.model.Image;

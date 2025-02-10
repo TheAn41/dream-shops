@@ -1,4 +1,4 @@
-package com.thean.dreamshops.service;
+package com.thean.dreamshops.service.category;
 
 import com.thean.dreamshops.dto.CategoryDTO;
 import com.thean.dreamshops.exception.AlredyExistingException;
@@ -47,6 +47,10 @@ public class CategoryService implements ICategoryService {
     @Override
     public Category updateCategory(CategoryDTO category, Long id) {
         return Optional.ofNullable(getCategoryById(id)).map(oldCategory->{
+            boolean exists = categoryRepository.existsByName(category.getName());
+            if (exists) {
+                throw new AlredyExistingException("Category name already exists");
+            }
             oldCategory.setName(category.getName());
             return categoryRepository.save(oldCategory);
         }).orElseThrow(()->new NotFoundException("Category not found"));
