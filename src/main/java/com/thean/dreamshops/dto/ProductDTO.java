@@ -5,6 +5,7 @@ import com.thean.dreamshops.model.Image;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -15,7 +16,7 @@ public class ProductDTO implements Serializable {
 
     private String brand;
 
-    private double price;
+    private BigDecimal price;
 
     private int inventory;
 
