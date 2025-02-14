@@ -1,5 +1,6 @@
 package com.thean.dreamshops.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,11 +24,13 @@ public class Image {
 
     private String fileType;
 
+    @JsonIgnore
     @Lob
     private Blob image;
 
     private  String downloadUrl;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;

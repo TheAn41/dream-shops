@@ -32,13 +32,10 @@ public class ExcelController {
         response.setContentType("application/octet-stream");
         response.setHeader("Content-Disposition", "attachment; filename=product_" + new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date()) + ".xlsx");
 
-        // Lấy dữ liệu
         List<Product> listProducts = productService.getAllProducts();
 
-        // Tạo instance BaseExport
         BaseExport<Product> excelExporter = new BaseExport<>();
 
-        // Tạo sheet "Product List"
         excelExporter.createSheet("Product List", listProducts)
                 .writeTitle("DANH SÁCH SẢN PHẨM", 6)
                 .writeHeaderLine(new String[]{"ID", "Tên Sản Phẩm", "Thương hiệu", "Giá sản phẩm", "Số lượng", "Mô tả"})
@@ -54,7 +51,7 @@ public class ExcelController {
                 return ResponseEntity.badRequest().body("File is empty!");
             }
             List<List<String>> excelData = uploadExcel.readFileExcel(file);
-            return ResponseEntity.ok(excelData); // Trả về dữ liệu đọc từ file
+            return ResponseEntity.ok(excelData);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error reading Excel file: " + e.getMessage());
         }
