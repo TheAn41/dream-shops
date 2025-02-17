@@ -1,6 +1,7 @@
 package com.thean.dreamshops.service.cart;
 
 import com.thean.dreamshops.model.Cart;
+import com.thean.dreamshops.model.User;
 
 import java.math.BigDecimal;
 
@@ -9,5 +10,7 @@ public interface ICartService {
     void clearCart(Long id);
     BigDecimal getTotalPrice(Long id);
 
-    Long initializeNewCart();
+    Cart initializeNewCart(User user);
+
+    Cart getCartByUserId(Long userId);
 }

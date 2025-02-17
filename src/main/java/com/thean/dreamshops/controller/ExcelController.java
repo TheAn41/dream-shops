@@ -20,7 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("${api.prefix}/excels")
 public class ExcelController {
-    @Autowired
+
     private final ProductService productService;
 
 

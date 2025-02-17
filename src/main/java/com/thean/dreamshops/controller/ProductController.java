@@ -1,6 +1,7 @@
 package com.thean.dreamshops.controller;
 
 import com.thean.dreamshops.dto.ProductDTO;
+import com.thean.dreamshops.exception.AlredyExistingException;
 import com.thean.dreamshops.exception.NotFoundException;
 import com.thean.dreamshops.model.Product;
 import com.thean.dreamshops.response.ApiResponse;
@@ -37,8 +38,8 @@ public class ProductController {
         try {
             Product product = productService.addProduct(productDTO);
             return ResponseEntity.ok(new ApiResponse("Add product success", product));
-        } catch (Exception e) {
-            return ResponseEntity.status(INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(),null));
+        } catch (AlredyExistingException e) {
+            return ResponseEntity.status(CONFLICT).body(new ApiResponse(e.getMessage(),null));
         }
     }
 

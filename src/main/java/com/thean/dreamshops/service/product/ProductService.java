@@ -2,6 +2,7 @@ package com.thean.dreamshops.service.product;
 
 import com.thean.dreamshops.dto.ImageDTO;
 import com.thean.dreamshops.dto.ProductDTO;
+import com.thean.dreamshops.exception.AlredyExistingException;
 import com.thean.dreamshops.exception.NotFoundException;
 import com.thean.dreamshops.model.Category;
 import com.thean.dreamshops.model.Image;
@@ -26,6 +27,10 @@ public class ProductService implements IProductService {
 
     @Override
     public Product addProduct(ProductDTO request) {
+        if(productExist(request.getName(), request.getBrand())){
+            throw new AlredyExistingException(request.getName()+" and "+request.getBrand()+" already exist, you may update this product instated!");
+        }
+
         Category category = Optional.ofNullable(categoryRepository.findByName(request.getCategory().getName()))
                 .orElseGet(()->{
                     Category newCategory = new Category(request.getCategory().getName());
@@ -43,6 +48,10 @@ public class ProductService implements IProductService {
                 request.getDescription(),
                 category
         );
+    }
+
+    private boolean productExist(String name, String brand){
+        return productRepository.existsByNameAndBrand(name,brand);
     }
 
     @Override

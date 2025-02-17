@@ -1,6 +1,19 @@
 package com.thean.dreamshops.dto;
 
-import java.io.Serializable;
+import com.thean.dreamshops.model.Cart;
+import com.thean.dreamshops.model.Order;
+import lombok.Data;
 
+import java.io.Serializable;
+import java.util.List;
+
+@Data
 public class UserDTO implements Serializable {
+    private Long id;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private String password;
+    private List<OrderDTO> orders;
+    private CartDTO cart;
 }
