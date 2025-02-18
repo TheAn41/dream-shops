@@ -2,9 +2,11 @@ package com.thean.dreamshops.dto;
 
 import com.thean.dreamshops.model.Cart;
 import com.thean.dreamshops.model.Order;
+import com.thean.dreamshops.model.Role;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 @Data

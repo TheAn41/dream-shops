@@ -8,6 +8,7 @@ import com.thean.dreamshops.response.ApiResponse;
 import com.thean.dreamshops.service.category.ICategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasRole('role_admin')")
     @PostMapping("/add")
     public ResponseEntity<ApiResponse> addCategory(@RequestBody CategoryDTO categoryDTO) {
         try {
@@ -60,6 +62,7 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasRole('role_admin')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<ApiResponse> deleteCategory(@PathVariable Long id) {
         try {
@@ -70,10 +73,11 @@ public class CategoryController {
         }
     }
 
+    @PreAuthorize("hasRole('role_admin')")
     @PutMapping("/update/{id}")
     public ResponseEntity<ApiResponse> updateCategory(@PathVariable Long id, @RequestBody CategoryDTO categoryDTO) {
         try {
-            Category updatedCategory = categoryService.updateCategory(categoryDTO,id);
+            Category updatedCategory = categoryService.updateCategory(categoryDTO, id);
             return ResponseEntity.ok(new ApiResponse("Updated success!", updatedCategory));
         } catch (NotFoundException e) {
             return ResponseEntity.status(NOT_FOUND).body(new ApiResponse(e.getMessage(), null));

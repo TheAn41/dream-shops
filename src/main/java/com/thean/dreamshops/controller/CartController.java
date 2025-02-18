@@ -1,13 +1,10 @@
 package com.thean.dreamshops.controller;
 
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.thean.dreamshops.exception.NotFoundException;
 import com.thean.dreamshops.model.Cart;
 import com.thean.dreamshops.response.ApiResponse;
 import com.thean.dreamshops.service.cart.ICartService;
 import lombok.RequiredArgsConstructor;
-import org.aspectj.weaver.ast.Not;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
