@@ -30,7 +30,7 @@ public class OrderService implements IOrderService {
     @Override
     public Order placeOrder(Long userId) {
         Cart cart = cartService.getCartByUserId(userId);
-        Order order = createOrder(cart);
+        Order order = createOrderForCart(cart);
         List<OrderItem> orderItemList = createOrderItems(order, cart);
         order.setOrderItems(new HashSet<>(orderItemList));
         order.setTotalAmount(calculateTotalAmount(orderItemList));
@@ -40,7 +40,7 @@ public class OrderService implements IOrderService {
         return savedOrder;
     }
 
-    private Order createOrder(Cart cart){
+    private Order createOrderForCart(Cart cart){
         Order order = new Order();
         order.setUser(cart.getUser());
         order.setOrderStatus(OrderStatus.PENDING);
@@ -84,5 +84,36 @@ private List<OrderItem> createOrderItems(Order order, Cart cart) {
 @Override
 public OrderDTO convertToOrderDTO(Order order) {
         return modelMapper.map(order, OrderDTO.class);
+    }
+
+    public Order createOrderFromOrderItem(OrderItem orderItem, Long userId) {
+        // Lấy thông tin sản phẩm
+        Product product = productRepository.findById(orderItem.getProduct().getId())
+                .orElseThrow(() -> new NotFoundException("Product not found"));
+
+        // Kiểm tra số lượng tồn kho
+        if (product.getInventory() < orderItem.getQuantity()) {
+            throw new IllegalArgumentException("Not enough stock for product: " + product.getName());
+        }
+
+        // Tạo đơn hàng mới
+        Order order = new Order();
+        order.setUser(orderItem.getOrder().getUser());
+        order.setOrderStatus(OrderStatus.PENDING);
+        order.setOrderDate(LocalDate.now());
+
+        // Cập nhật tồn kho sản phẩm
+        product.setInventory(product.getInventory() - orderItem.getQuantity());
+        productRepository.save(product);
+
+        // Gán orderItem vào order
+        orderItem.setOrder(order);
+        order.setOrderItems(new HashSet<>(List.of(orderItem)));
+
+        // Tính tổng tiền
+        order.setTotalAmount(orderItem.getPrice().multiply(new BigDecimal(orderItem.getQuantity())));
+
+        // Lưu đơn hàng vào database
+        return orderRepository.save(order);
     }
 }

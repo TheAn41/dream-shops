@@ -4,6 +4,7 @@ package com.thean.dreamshops.controller;
 import com.thean.dreamshops.dto.OrderDTO;
 import com.thean.dreamshops.exception.NotFoundException;
 import com.thean.dreamshops.model.Order;
+import com.thean.dreamshops.model.OrderItem;
 import com.thean.dreamshops.response.ApiResponse;
 import com.thean.dreamshops.service.order.IOrderService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,12 @@ import java.util.List;
 @RequestMapping("${api.prefix}/orders")
 public class OrderController {
     private final IOrderService orderService;
+
+    @PostMapping("/create-from-item")
+    public ResponseEntity<OrderDTO> createOrderFromOrderItem(@RequestBody OrderItem orderItem, @RequestParam Long userId) {
+        Order order = orderService.createOrderFromOrderItem(orderItem, userId);
+        return ResponseEntity.ok(orderService.convertToOrderDTO(order));
+    }
 
     @PostMapping("/order")
     public ResponseEntity<ApiResponse> createOrder(@RequestParam Long userId) {
